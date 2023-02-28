@@ -1,2 +1,2 @@
-def get_prices() -> pd.core.series.Series:
+def get_prices(tickers: list) -> pd.core.series.Series:
   pass
