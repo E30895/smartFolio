@@ -10,8 +10,7 @@ import graphics
 import view
 
 def main():
-    data = get_prices.get_prices(tickers, start, end, interval)
-
+    pass
 
 if __name__ == "__main__":
     main()
