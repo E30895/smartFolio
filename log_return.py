@@ -1,2 +1,5 @@
-def log_return (prices: pd.core.series.Series) -> pd.core.series.Series:
+import pandas as pd
+import numpy as np
+
+def log_return (prices: pd.Series) -> pd.Series:
   pass
