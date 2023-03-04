@@ -1,0 +1,3 @@
+import smartfolio
+
+smartfolio.main()
