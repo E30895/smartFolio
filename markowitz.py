@@ -1,4 +1,4 @@
 import pandas as pd
 
-def optimization (retuns: pd.Series):
+def optimization (returns: pd.Series):
    pass

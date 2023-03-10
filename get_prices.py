@@ -1,5 +1,48 @@
 import yfinance as yf
 import pandas as pd
+import tabula
+
+
+def get_tickers() -> list:
+    
+    tables = tabula.read_pdf('Brazilian_Stock_Exchange_Companies.pdf', pages='1-11')
+    
+    for table in tables:
+        for coluna in table.columns:
+            if 'Name Symbol' in coluna:
+                table['Name Symbol'+'.SA'] = table['Name Symbol']
+            if '.SA' not in coluna:
+                table.drop(columns=coluna, inplace=True)
+    
+    for table in tables:
+        table.dropna(inplace=True)
+
+    tickers_list = []
+
+    for table in tables:
+        for i in range(len(table)):
+            tickers_list.append(table.iloc[i,0][-8:])
+
+    for table in tables:
+        for name in table.columns.values:
+            if name[-8:-3].isupper():
+                tickers_list.append(name[-8:-3])
+
+    for ticker in tickers_list:
+        if ' ' in ticker:
+            tickers_list.remove(ticker)
+
+    for ticker in tickers_list:
+        if '.SA' not in ticker:
+            tickers_list.remove(ticker)
+
+    for ticker in tickers_list:
+        if ticker.startswith('X'):
+            tickers_list.remove(ticker)
+
+    tickers_list
+
+    return tickers_list
 
 
 def get_prices(tickers: str | list, start: str, end: str, interval: str) -> pd.Series | pd.DataFrame:
