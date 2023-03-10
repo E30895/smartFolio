@@ -1,17 +1,17 @@
-import dash
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Output, Input, State
 import pandas as pd
 import numpy as np
 import get_risk
 import yfinance as yf
 import get_data
-import dash_table
+from datetime import datetime, date
 #import get_returns
 
 app = Dash(__name__)
 
-tickers_list = get_data.get_tickers()
+tickers = get_data.get_tickers()
+intervals = ['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo']
 
 ###### LAYOUT ############
 
@@ -25,11 +25,30 @@ app.layout = html.Div([
     html.Div(children=[
         html.Br(),
         html.Label('Select your ticker'),
-        dcc.Dropdown(tickers_list, #PASSA UMA LISTA DE TICKERS
+        dcc.Dropdown(tickers,
                      multi=True, 
                      id='tickers_dropdown'
-                     )], 
-                     style={'padding': 10, 'flex': 1, 'textAlign':'center'}),
+                     )
+                     ], style={'padding': 10, 'flex': 1, 'textAlign':'center'}),
+    
+    html.Div(children=[
+        
+        html.Br(),
+
+        html.Label('Select start date'),
+        dcc.Input(id='start_date', type='text', placeholder="YYYY-MM-DD format"),
+        
+        html.Label('Select end date (Optional)'), 
+        dcc.Input(id='end_date', type='text', placeholder="YYYY-MM-DD format"),
+
+        html.Br(),
+        
+        html.Label('Select interval'),
+        dcc.Dropdown(intervals, id='intervals_dropdown'),
+
+        html.Button('Submit', id='submit_button')
+    
+    ], style={'padding': 10, 'flex': 1, 'textAlign':'center'}),
 
     html.Div(id='selected_tickers', className='table'),    
     ],
@@ -44,11 +63,15 @@ app.layout = html.Div([
 
 @app.callback(
     Output('selected_tickers', 'children'),
-    Input('tickers_dropdown', 'value'),
+    [Input('submit_button','n_clicks')],
+    [State('tickers_dropdown', 'value'),
+    State('start_date', 'value'),
+    State('end_date', 'value'),
+    State('intervals_dropdown', 'value')],
     prevent_initial_call=True
 )
-def get_some_prices(selected_tickers):
-    prices = yf.download(selected_tickers, start = '2015-01-01')['Adj Close'].fillna(0).reset_index()
+def get_some_prices(n, selected_tickers, start, end, interval):
+    prices = yf.download(selected_tickers, start=start, end=end, interval=interval)['Adj Close'].fillna(0).reset_index()
     col = [{'name': i, 'id': i} for i in prices.columns]
     table = dash_table.DataTable(
             id='table',
