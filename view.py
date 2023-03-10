@@ -5,22 +5,15 @@ import pandas as pd
 import numpy as np
 import get_risk
 import yfinance as yf
-import get_prices
+import get_data
 import dash_table
-
-
 #import get_returns
 
 app = Dash(__name__)
 
-#list_symbols = ['WEGE3.SA', 'TASA4.SA', 'PRIO3.SA']
-#prices = pd.DataFrame()
-#prices = yf.download(list_symbols, start='2000-01-01')['Adj Close'].fillna(0).reset_index()
-tickers_list = list(set(get_prices.get_tickers()))
+tickers_list = get_data.get_tickers()
 
-#returns,b = get_returns.log_return(prices)
-
-###### LAOUT ############
+###### LAYOUT ############
 
 app.layout = html.Div([
 
@@ -40,11 +33,6 @@ app.layout = html.Div([
 
     html.Div(id='selected_tickers', className='table'),    
     ],
-
-    #html.Div(children=[
-    #    html.Br(),
-    #    html.Label('Prices table'),
-    #    table(prices)])],
 
     #html.Div(id = "teste",
     #children=[
@@ -70,8 +58,6 @@ def get_some_prices(selected_tickers):
             data = prices.to_dict('records')
     )
     return table
-
-dash_table.DataTable()
 
 '''
     df_chart = df.groupby('Name').sum()
