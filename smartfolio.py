@@ -4,7 +4,7 @@ import yfinance as yf
 import fill
 import get_data
 import get_risk
-import log_return
+import get_returns
 import markowitz
 import tools
 import view
