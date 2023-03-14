@@ -2,11 +2,8 @@ from dash import Dash, html, dcc, dash_table
 from dash.dependencies import Output, Input, State
 import pandas as pd
 import numpy as np
-import get_risk
 import yfinance as yf
 import get_data
-from datetime import datetime, date
-import get_returns
 import plotly.express as px
 
 
