@@ -1,3 +1,0 @@
-import smartfolio
-
-smartfolio.main()
