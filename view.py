@@ -10,8 +10,19 @@ Esse módulo fornece recursos de visualização: gráficos, laytout[...]
 '''
 
 def fig_line(data, selected_tickers):
-    fig = px.line(data, x = "date", y = selected_tickers)
+    fig = px.line(data, x = "Date", y = selected_tickers)
     return fig
+
+def table(dataframe: pd.DataFrame, max_rows=10):
+    col = [{'name': i, 'id': i} for i in dataframe.columns]
+    table = dash_table.DataTable(
+            id='table',
+            columns = col,
+            page_size = 6,
+            style_cell={'width': '45'},
+            data = dataframe.to_dict('records')
+            )
+    return table
 
 def layout_creator(tickers, intervals):
     return html.Div([
@@ -54,4 +65,3 @@ def layout_creator(tickers, intervals):
     ],
 
     style={'display': 'flex', 'flex-direction': 'column'})
-
