@@ -14,7 +14,7 @@ Esse módulo é o main, chamando todos os outros módulos
 # Cria o controlador da aplicação
 app = Dash(__name__)
 
-tickers = model_financial.get_tickers()
+tickers = model_tickers.get_tickers()
 intervals = ['1d','5d','1wk','1mo','3mo']
 
 
@@ -33,7 +33,7 @@ app.layout = layout
     prevent_initial_call=True
 )
 def main(n_clicks, selected_tickers, start, end, interval):
-    prices = model_financial.get_prices(selected_tickers, start=start, end=end, interval=interval)
+    prices = model_tickers.get_prices(selected_tickers, start=start, end=end, interval=interval)
     returns = model_financial.log_return(prices)
     table = view.table(returns)
     fig = view.fig_line(returns, selected_tickers)
