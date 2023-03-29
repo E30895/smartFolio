@@ -1,6 +1,8 @@
 import requests
 import re
 import datetime
+import pandas as pd
+import numpy as np
 
 def get_tickers() -> list:
     ''' Get many brazilians stock tickers from a text file and
